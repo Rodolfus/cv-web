@@ -135,7 +135,7 @@
   .page-intro h1 { font-size: 34px; }
   .page-intro p { color: var(--muted); font-size: 18px; max-width: 560px; margin: 8px 0 0; }
   .proj .enlace {
-    display: inline-block; margin-top: 16px;
+    display: inline-block; margin-top: 16px; margin-right: 22px;
     font: 600 15px system-ui, sans-serif; color: var(--accent); text-decoration: none;
   }
   .proj .enlace:hover { text-decoration: underline; }
