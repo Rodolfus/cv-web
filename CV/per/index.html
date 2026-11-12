@@ -1,0 +1,923 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rumbo PER</title>
+<meta name="description" content="Prepara el examen teórico del PER desde cero: teoría sencilla, tests y simulacros.">
+<meta name="theme-color" content="#0a6c88">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+[hidden]{display:none!important}
+/* Concepto: cuaderno de bitácora moderno. Fondo azul grisáceo frío, tinta marino, acento verde mar. Las marcas IALA llevan sus colores reales. */
+:root{
+  --bg:#eef3f6; --surface:#ffffff; --ink:#0d2331; --muted:#566b79; --line:#d2dde4;
+  --accent:#0a6c88; --accent-ink:#ffffff; --soft:#e0eff4; --sea:#cfe3ec;
+  --ok:#1b7f4b; --ok-bg:#e1f3e9; --bad:#b83428; --bad-bg:#fbe8e5; --warn:#9a6508; --warn-bg:#fbf0d9;
+  --f-head:'Space Grotesk','Segoe UI',system-ui,sans-serif;
+  --f-body:'Inter','Segoe UI',system-ui,sans-serif;
+  --f-mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0a171f; --surface:#112530; --ink:#e5eff5; --muted:#92a9b7; --line:#22394680;
+    --accent:#52c4df; --accent-ink:#04202a; --soft:#143240; --sea:#17384a;
+    --ok:#52cf90; --ok-bg:#12372a; --bad:#ff8579; --bad-bg:#40201d; --warn:#e8b552; --warn-bg:#3b2f13;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0a171f; --surface:#112530; --ink:#e5eff5; --muted:#92a9b7; --line:#22394680;
+  --accent:#52c4df; --accent-ink:#04202a; --soft:#143240; --sea:#17384a;
+  --ok:#52cf90; --ok-bg:#12372a; --bad:#ff8579; --bad-bg:#40201d; --warn:#e8b552; --warn-bg:#3b2f13;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-block:0 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:860px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-head);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,5vw,40px);letter-spacing:-.02em}
+h2{font-size:22px;letter-spacing:-.01em}
+h3{font-size:18px}
+p{margin:0 0 12px}
+a{color:var(--accent)}
+code{font-family:var(--f-mono);background:var(--soft);padding:1px 6px;border-radius:4px;font-size:.92em}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.eyebrow{font-family:var(--f-head);text-transform:uppercase;letter-spacing:.08em;font-size:12px;color:var(--muted);font-weight:600}
+
+/* barra superior */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;padding-block:16px 12px}
+.brand{font-family:var(--f-head);font-weight:700;font-size:20px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+.brand svg{width:26px;height:26px}
+.nav{display:flex;gap:4px;flex-wrap:wrap}
+.nav a{font-family:var(--f-head);font-weight:500;font-size:15px;color:var(--muted);text-decoration:none;padding:7px 12px;border-radius:8px}
+.nav a:hover{background:var(--soft);color:var(--ink)}
+.nav a[aria-current="page"]{background:var(--ink);color:var(--bg)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+main{display:flex;flex-direction:column;gap:20px;padding-top:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px}
+.card.flat{background:transparent;border-style:dashed}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grow{flex:1;min-width:0}
+.btn{font-family:var(--f-head);font-weight:600;font-size:16px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:11px 18px;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-block}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn[disabled]{opacity:.45;cursor:default}
+.chip{font-family:var(--f-head);font-size:14px;font-weight:500;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 14px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.pill{display:inline-block;font-family:var(--f-head);font-size:12px;font-weight:600;padding:2px 10px;border-radius:999px;background:var(--soft);color:var(--accent)}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}
+.pill.bad{background:var(--bad-bg);color:var(--bad)}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+
+/* inicio */
+.hero{display:flex;flex-direction:column;gap:14px;padding-block:8px 4px}
+.hero p{max-width:60ch;font-size:18px;color:var(--muted);margin:0}
+.stats{display:flex;gap:28px;flex-wrap:wrap}
+.stat b{display:block;font-family:var(--f-head);font-size:24px;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+.units{display:flex;flex-direction:column}
+.unit{display:grid;grid-template-columns:36px 1fr auto;gap:4px 14px;align-items:center;padding:14px 4px;border-top:1px solid var(--line);text-decoration:none;color:inherit}
+.unit:first-child{border-top:0}
+.unit:hover{background:var(--soft)}
+.unit .no{font-family:var(--f-head);font-weight:700;font-size:20px;color:var(--accent);grid-row:span 2;text-align:center}
+.unit .nm{font-family:var(--f-head);font-weight:600}
+.unit .ds{font-size:14px;color:var(--muted);grid-column:2}
+.unit .meta{text-align:right;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;grid-row:span 2}
+.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--accent)}
+.steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+
+/* lección */
+.lesson{display:flex;flex-direction:column;gap:14px}
+.lesson ul,.lesson ol{margin:0 0 4px;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.lesson ul ul{margin-top:6px}
+.tip{background:var(--warn-bg);color:var(--ink);border-radius:8px;padding:10px 14px;font-size:15px}
+.figs{display:flex;gap:8px 18px;flex-wrap:wrap;margin:6px 0}
+.figs figure{margin:0;text-align:center;width:92px}
+.figs figcaption{font-size:12px;color:var(--muted);line-height:1.25;margin-top:2px}
+.figs svg,.qfig svg{width:64px;height:100px;display:block;margin:0 auto}
+.check{border-top:1px dashed var(--line);padding-top:14px;display:flex;flex-direction:column;gap:12px}
+.check .eyebrow{color:var(--accent)}
+.done{color:var(--ok)}
+
+/* preguntas */
+.qtext{font-family:var(--f-head);font-size:19px;font-weight:600;line-height:1.35;margin-bottom:12px}
+.qfig{margin:0 0 12px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:11px 14px;cursor:pointer}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt .ltr{font-family:var(--f-head);font-weight:700;color:var(--muted);flex:none;width:18px}
+.opt .otx{min-width:0}
+.opt.sel{border-color:var(--accent);background:var(--soft)}
+.opt.correct{border-color:var(--ok);background:var(--ok-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.opt[disabled]{cursor:default;color:var(--ink)}
+.why{margin-top:12px;padding:12px 14px;border-radius:10px;font-size:15px}
+.why.ok{background:var(--ok-bg)}
+.why.bad{background:var(--bad-bg)}
+.prog{display:flex;justify-content:space-between;gap:12px;font-family:var(--f-head);font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.timer{font-weight:700;color:var(--ink)}
+.timer.low{color:var(--bad)}
+.grid{display:flex;flex-wrap:wrap;gap:6px}
+.grid button{width:38px;height:36px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-family:var(--f-head);font-weight:600;font-size:14px;cursor:pointer;font-variant-numeric:tabular-nums}
+.grid button.ans{background:var(--soft);border-color:var(--accent)}
+.grid button.cur{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* resultados */
+.verdict{font-family:var(--f-head);font-size:30px;font-weight:700}
+.verdict.ok{color:var(--ok)}
+.verdict.bad{color:var(--bad)}
+table{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{font-family:var(--f-head);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.scroll{overflow-x:auto}
+.review{display:flex;flex-direction:column;gap:14px}
+.review .card{padding:16px}
+.picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.pick{font:inherit;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;color:var(--ink);display:flex;flex-direction:column;gap:2px}
+.pick:hover{border-color:var(--accent)}
+.pick b{font-family:var(--f-head)}
+.pick span{font-size:13px;color:var(--muted)}
+dl{margin:0;display:grid;grid-template-columns:minmax(120px,max-content) 1fr;gap:8px 18px}
+dt{font-family:var(--f-head);font-weight:600}
+dd{margin:0;min-width:0}
+@media (max-width:560px){dl{grid-template-columns:1fr;gap:2px}dd{margin-bottom:10px}.unit{grid-template-columns:30px 1fr}.unit .meta{grid-column:2;grid-row:auto;text-align:left}}
+@media (prefers-reduced-motion:no-preference){.bar i{transition:width .3s}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// Temario del PER según el Anexo II del RD 875/2014 (11 unidades, 45 preguntas)
+const UNITS = [
+{ id:1, n:4, t:'Nomenclatura náutica', d:'Las partes del barco y cómo se llaman sus medidas.', lessons:[
+ { h:'Las partes del barco', b:`
+<p>Imagina que estás en el centro del barco, mirando hacia delante.</p>
+<ul>
+<li><b>Proa</b>: la parte de delante.</li>
+<li><b>Popa</b>: la parte de atrás.</li>
+<li><b>Babor</b>: tu <b>izquierda</b>. Luz <b>roja</b>.</li>
+<li><b>Estribor</b>: tu <b>derecha</b>. Luz <b>verde</b>.</li>
+<li><b>Amura</b>: la zona curva del casco a cada lado de la proa.</li>
+<li><b>Aleta</b>: la zona curva a cada lado de la popa.</li>
+<li><b>Través</b>: justo a un lado, a 90° de la proa.</li>
+</ul>
+<p class="tip">Truco: el vino de <b>Oporto</b> (port, babor) es tinto, como la luz roja de babor.</p>` },
+ { h:'Medidas y posiciones', b:`
+<ul>
+<li><b>Eslora</b>: lo largo del barco.</li>
+<li><b>Manga</b>: lo ancho, en la parte más ancha.</li>
+<li><b>Puntal</b>: la altura del casco, de la quilla a la cubierta.</li>
+<li><b>Calado</b>: lo que se hunde el barco. Va de la línea de flotación a la quilla.</li>
+<li><b>Francobordo</b>: lo que sobresale del agua, de la flotación a la cubierta.</li>
+<li><b>Obra viva</b> (o carena): la parte del casco que va <b>sumergida</b>.</li>
+<li><b>Obra muerta</b>: la parte que queda <b>fuera</b> del agua.</li>
+<li><b>Asiento</b>: la diferencia entre el calado de popa y el de proa.</li>
+<li><b>Escora</b>: la inclinación del barco hacia un costado.</li>
+</ul>` },
+ { h:'Hélice, timón y ancla', b:`
+<p>La hélice puede girar de dos maneras al ir hacia delante. <b>Dextrógira</b>: gira a derechas (como las agujas del reloj, visto desde popa). <b>Levógira</b>: gira a izquierdas.</p>
+<p>El timón se maneja con una <b>caña</b> (palanca) o con una <b>rueda</b>. La pieza que se mueve en el agua es la <b>pala</b>.</p>
+<p>Partes del ancla: el <b>arganeo</b> (anilla donde se une la cadena), la <b>caña</b> (el palo central), las <b>uñas</b> (lo que se clava en el fondo) y el <b>cepo</b> (barra que ayuda a que agarre). La cadena sale del barco por el <b>escoben</b> y se recoge con el <b>molinete</b>.</p>` }
+]},
+{ id:2, n:2, t:'Amarre y fondeo', d:'Nudos básicos, amarras y cómo echar el ancla.', lessons:[
+ { h:'Nudos y amarras', b:`
+<p>Tres nudos que necesitas sí o sí:</p>
+<ul>
+<li><b>As de guía</b>: hace un lazo que no se corre. Sirve para amarrar a una anilla o a una bita.</li>
+<li><b>Nudo llano</b>: une dos cabos del mismo grosor.</li>
+<li><b>Ballestrinque</b>: se hace rápido y sirve para amarrar a un poste o una barandilla.</li>
+</ul>
+<p>Cuando amarras al muelle usas varios cabos con nombre:</p>
+<ul>
+<li><b>Largos</b>: salen de proa o popa hacia delante o atrás.</li>
+<li><b>Traveses</b>: salen del costado, perpendiculares al muelle.</li>
+<li><b>Esprines</b>: salen cruzados y evitan que el barco se mueva hacia delante o hacia atrás.</li>
+</ul>` },
+ { h:'Fondear', b:`
+<ul>
+<li><b>Fondear</b>: echar el ancla. <b>Levar</b>: recogerla.</li>
+<li>Mejor fondo para que agarre: <b>arena o fango</b>. Malo: roca lisa, piedras, algas.</li>
+<li>La <b>posidonia</b> (pradera de plantas marinas) está protegida. No se fondea sobre ella.</li>
+<li><b>Escopo</b>: cuánta cadena largas respecto a la profundidad. Cuanta más largues, mejor agarra. Con viento fuerte, largas más.</li>
+<li><b>Garrear</b>: cuando el ancla no agarra y se arrastra por el fondo.</li>
+<li>Cadena <b>a pique</b>: está vertical y el ancla está a punto de despegar del fondo.</li>
+</ul>` }
+]},
+{ id:3, n:4, t:'Seguridad en la mar', d:'Qué revisar antes de salir y qué hacer si algo va mal.', lessons:[
+ { h:'Antes de zarpar', b:`
+<ul>
+<li>Mira la <b>previsión meteorológica</b>. Si es mala, no salgas.</li>
+<li>Comprueba combustible, batería, motor, bomba de achique y el <b>material de seguridad</b>: chalecos, aros, bengalas, extintor, botiquín, radio.</li>
+<li>Deja a alguien de confianza en tierra tu <b>plan de ruta</b> y a qué hora piensas volver.</li>
+<li>Explica a la tripulación dónde está el material y qué hacer si alguien cae al agua.</li>
+</ul>
+<p><b>Estabilidad</b>: es la capacidad del barco de volver a su posición normal después de inclinarse. Repartir bien el peso la mejora.</p>` },
+ { h:'Mal tiempo y emergencias', b:`
+<ul>
+<li><b>Capear</b> un temporal: reducir velocidad al mínimo que permita gobernar y poner la proa a las olas, no de costado.</li>
+<li><b>Hombre al agua</b>: gritar «hombre al agua», lanzar un aro salvavidas, no perderlo de vista y marcar la posición en el GPS.</li>
+<li><b>Remolque</b>: cabo largo y resistente, amarrado a puntos firmes y a poca velocidad.</li>
+<li><b>Pedir ayuda</b>: radio VHF <b>canal 16</b>, o el teléfono de Salvamento Marítimo <b>900 202 202</b>. También funciona el 112.</li>
+<li><b>Señales de socorro</b>: bengala roja de mano, cohete con paracaídas rojo, humo naranja.</li>
+<li><b>Radiobaliza EPIRB</b>: al activarla manda tu posición por satélite.</li>
+</ul>` }
+]},
+{ id:4, n:2, t:'Legislación', d:'Reglas sobre puertos, bañistas, residuos y espacios protegidos.', lessons:[
+ { h:'Lo que debes saber', b:`
+<ul>
+<li><b>Bandera</b>: la embarcación española lleva la bandera de España en la <b>popa</b>.</li>
+<li><b>Documentos a bordo</b>: tu título, la documentación de la embarcación y el <b>seguro de responsabilidad civil</b> obligatorio.</li>
+<li><b>Bañistas</b>: las zonas de baño balizadas están prohibidas a la navegación. Solo se entra por los canales señalizados y despacio.</li>
+<li><b>Buzos</b>: la <b>bandera «A»</b> del código internacional (azul y blanca) significa «tengo buzos sumergidos, mantente alejado y despacio».</li>
+<li><b>Contaminación</b>: está prohibido tirar plásticos y basura al mar. Nunca se vierten hidrocarburos.</li>
+<li><b>Auxilio</b>: debes ayudar a quien esté en peligro en el mar, si no pones en grave riesgo tu barco ni a tu gente.</li>
+<li><b>Espacios protegidos</b>: no se fondea sobre posidonia. En reservas marinas hay normas propias.</li>
+</ul>` }
+]},
+{ id:5, n:5, t:'Balizamiento', d:'Boyas y luces que marcan canales y peligros. Un bloque exigente: necesitas 3 de 5.', lessons:[
+ { h:'Marcas laterales y aguas navegables', b:`
+<p>Usamos el sistema <b>IALA, Región A</b> (Europa, África y gran parte de Asia). Lo que importa es el sentido en que entras a puerto desde el mar.</p>
+<ul>
+<li><b>Babor</b> (izquierda al entrar): boya <b>roja</b>, cilíndrica, luz roja.</li>
+<li><b>Estribor</b> (derecha al entrar): boya <b>verde</b>, cónica con la punta arriba, luz verde.</li>
+</ul>
+<p>Las <b>aguas navegables</b> (centro del canal) llevan franjas verticales <b>rojas y blancas</b> y una esfera roja arriba.</p>
+<div class="figs" data-figs="port,stbd,safe"></div>` },
+ { h:'Marcas cardinales', b:`
+<p>Dicen en qué lado de ellas está el agua buena. Siempre pasas por el lado que dice su nombre. Las <b>puntas de los conos</b> te enseñan la dirección.</p>
+<ul>
+<li><b>Norte</b>: negro arriba, amarillo abajo. Dos conos con la punta <b>arriba</b>. Luz blanca centelleante continua.</li>
+<li><b>Sur</b>: amarillo arriba, negro abajo. Dos conos con la punta <b>abajo</b>. Luz con 6 centelleos y uno largo.</li>
+<li><b>Este</b>: negro, amarillo, negro. Conos <b>base con base</b> (un rombo). Luz con 3 centelleos.</li>
+<li><b>Oeste</b>: amarillo, negro, amarillo. Conos <b>punta con punta</b> (reloj de arena). Luz con 9 centelleos.</li>
+</ul>
+<p class="tip">Truco de la luz: piensa en un reloj. Este = las 3, Sur = las 6, Oeste = las 9, Norte = continua.</p>
+<div class="figs" data-figs="N,E,S,W"></div>` },
+ { h:'Peligro aislado, especiales y bifurcación', b:`
+<ul>
+<li><b>Peligro aislado</b>: negra con bandas rojas y <b>dos esferas negras</b>. Marca un peligro pequeño. Se pasa a distancia por cualquier lado.</li>
+<li><b>Marca especial</b>: toda <b>amarilla</b> con un aspa (X) amarilla. Zonas de ocio, cables, etc.</li>
+<li><b>Bifurcación</b>: dónde se divide un canal. La parte de arriba dice por qué lado dejarla y la banda ancha dice cuál es el canal principal.
+ <ul><li>Roja con banda verde: se deja por babor y el canal principal queda a <b>estribor</b>.</li>
+ <li>Verde con banda roja: se deja por estribor y el canal principal queda a <b>babor</b>.</li></ul></li>
+</ul>
+<div class="figs" data-figs="isol,special,prefStbd,prefPort"></div>` },
+ { h:'Luces y ritmos', b:`
+<ul>
+<li><b>Fl</b> (destello): un destello corto, mucha oscuridad.</li>
+<li><b>Q</b> (centelleo) y <b>VQ</b> (muy rápido): destellos seguidos, 60 o 120 por minuto.</li>
+<li><b>LFl</b>: destello largo (2 s o más).</li>
+<li><b>Iso</b> (isofase): luz y oscuridad iguales. Por ejemplo, 2 s encendida y 2 s apagada.</li>
+<li><b>Oc</b> (ocultaciones): <b>más luz que oscuridad</b>.</li>
+<li><b>F</b>: luz fija.</li>
+</ul>
+<p>Cómo se lee: <code>Fl(3) G 10s</code> = luz verde de 3 destellos cada 10 segundos.</p>` }
+]},
+{ id:6, n:10, t:'Reglamento (RIPA)', d:'Las reglas para no chocar. Es el bloque con más preguntas: 10 de 45.', lessons:[
+ { h:'Reglas básicas', b:`
+<ul>
+<li>Mantén siempre <b>vigilancia</b> con la vista y el oído.</li>
+<li>Navega a <b>velocidad de seguridad</b>: la que te permite maniobrar y parar a tiempo según visibilidad, tráfico y mar.</li>
+<li><b>Riesgo de abordaje</b>: si la demora del otro barco <b>no cambia</b> mientras se acerca, vais a chocar.</li>
+<li>La maniobra para evitarlo debe ser <b>clara, con tiempo y lo bastante grande</b> para que la vea el otro.</li>
+</ul>` },
+ { h:'Cuándo cede cada barco', b:`
+<p>Entre dos barcos de <b>motor</b>:</p>
+<ul>
+<li><b>De frente</b> (rumbos opuestos): los dos caen a <b>estribor</b> y se cruzan por babor.</li>
+<li><b>Cruzándose</b>: cede el que ve al otro por su <b>estribor</b> (derecha). El otro mantiene rumbo y velocidad.</li>
+<li><b>Alcance</b>: el que alcanza por detrás (desde más de 22,5° a popa del través) cede siempre.</li>
+</ul>
+<p>Entre dos <b>veleros</b>:</p>
+<ul>
+<li>Viento por <b>distinto</b> costado: cede el que tiene el viento por <b>babor</b>.</li>
+<li>Viento por el <b>mismo</b> costado: cede el de <b>barlovento</b> (el más cerca del viento).</li>
+</ul>` },
+ { h:'Prioridades y zonas especiales', b:`
+<p>Si son de tipo distinto, cede el que está más abajo en esta lista:</p>
+<ol>
+<li>Buque <b>sin gobierno</b></li>
+<li>Buque de <b>maniobra restringida</b></li>
+<li>Buque de <b>pesca</b> con artes que limitan la maniobra</li>
+<li><b>Velero</b></li>
+<li>Barco de <b>motor</b></li>
+</ol>
+<p>Un barco de motor cede ante un velero, salvo que lo esté alcanzando.</p>
+<ul>
+<li><b>Canal estrecho</b>: ve por el lado de <b>estribor</b> del canal, lo más cerca de su límite exterior.</li>
+<li><b>Separación de tráfico</b>: cruza con rumbo lo más <b>perpendicular</b> posible.</li>
+</ul>` },
+ { h:'Luces y marcas de día', b:`
+<p>Un barco de <b>motor navegando</b> lleva: <b>luz de tope</b> blanca (al frente), <b>roja</b> a babor, <b>verde</b> a estribor y <b>luz de alcance</b> blanca en popa. Si mide <b>50 m o más</b>, lleva dos luces de tope (la de atrás más alta).</p>
+<p>Un <b>velero navegando</b> lleva las dos de costado y la de alcance. No lleva luz de tope.</p>
+<ul>
+<li>Si ves <b>solo la luz blanca de popa</b>, estás alcanzando a ese barco. Cedes tú.</li>
+<li><b>Sin gobierno</b>: dos luces rojas en vertical. De día, dos bolas negras.</li>
+<li><b>Fondeado</b>: luz blanca visible en todo el horizonte. De día, <b>una bola negra</b> en la proa.</li>
+<li>Velero con el <b>motor funcionando</b>: de día, un <b>cono negro con la punta hacia abajo</b>. Cuenta como barco de motor.</li>
+</ul>
+<p>Reparto de los sectores de luz: tope 225°, cada costado 112,5° y alcance 135°.</p>` },
+ { h:'Señales de sonido y niebla', b:`
+<p><b>Maniobra</b> con pitadas cortas (cuando os veis): <b>1 corta</b> = caigo a estribor, <b>2 cortas</b> = caigo a babor, <b>3 cortas</b> = voy atrás, <b>5 cortas</b> = no entiendo tus intenciones o hay peligro.</p>
+<p><b>Con niebla</b> (visibilidad reducida), cada 2 minutos como máximo:</p>
+<ul>
+<li>Motor con arrancada: <b>1 larga</b>.</li>
+<li>Motor parado, sin arrancada: <b>2 largas</b>.</li>
+<li>Velero, pesca, sin gobierno, remolcando: <b>1 larga y 2 cortas</b>.</li>
+<li>Fondeado: <b>campana rápida unos 5 segundos cada minuto</b>.</li>
+</ul>` }
+]},
+{ id:7, n:2, t:'Maniobra y navegación', d:'Cómo responde el barco al timón y a la hélice.', lessons:[
+ { h:'Gobierno y atraque', b:`
+<ul>
+<li><b>Caña</b>: se mueve hacia el lado <b>contrario</b> al que quieres ir. Caña a babor, proa a estribor.</li>
+<li><b>Rueda</b>: igual que un coche. Giras la rueda a estribor y la proa va a estribor.</li>
+<li>Al girar, la <b>popa se abre hacia fuera</b> (lado contrario al giro).</li>
+<li>Hélice <b>dextrógira</b> en <b>marcha atrás</b>: la popa se va hacia <b>babor</b>.</li>
+<li><b>Atracar</b>: acércate con la proa contra el viento o la corriente (la que más empuje), con un ángulo suave, y lleva defensas preparadas.</li>
+<li><b>Boya</b>: aproxímate con la proa al viento o a la corriente, a poca velocidad.</li>
+</ul>` }
+]},
+{ id:8, n:3, t:'Emergencias en la mar', d:'Heridos, incendios, vías de agua y abandono del barco.', lessons:[
+ { h:'Qué hacer y en qué orden', b:`
+<ul>
+<li><b>Hemorragia</b>: presiona directamente sobre la herida con una gasa limpia.</li>
+<li><b>Hipotermia</b>: quita la ropa mojada, abriga y da bebida caliente sin alcohol. No frotes.</li>
+<li><b>Fuego</b>: necesita cuatro cosas (tetraedro): <b>combustible, comburente (oxígeno), calor y reacción en cadena</b>. Quitas una y se apaga. <b>Sofocar</b> quita el oxígeno. <b>Enfriar</b> quita el calor.</li>
+<li>Fuego <b>eléctrico</b>: extintor de CO₂ o polvo. <b>Nunca agua</b>.</li>
+<li><b>Vía de agua</b>: localízala, tápala con lo que tengas y achica.</li>
+<li><b>Varada</b>: para el motor, mira si hay heridos y daños, y sonda alrededor antes de intentar salir.</li>
+<li><b>Abandono</b>: es el <b>último recurso</b>. Mientras el barco flote, es más seguro quedarse a bordo. Pasa a la balsa salvavidas.</li>
+</ul>` }
+]},
+{ id:9, n:4, t:'Meteorología', d:'Presión, viento, mar y señales de cambio de tiempo.', lessons:[
+ { h:'Presión y viento', b:`
+<ul>
+<li><b>Presión atmosférica</b>: se mide en hectopascales (hPa).</li>
+<li><b>Isobara</b>: línea que une puntos con la <b>misma presión</b>. Si están muy juntas, hay <b>viento fuerte</b>.</li>
+<li><b>Anticiclón</b> (alta presión): tiempo estable y bueno.</li>
+<li><b>Borrasca</b> (baja presión): nubes, lluvia y viento.</li>
+<li>El viento se nombra por <b>de dónde viene</b>. Viento del NW viene del noroeste.</li>
+<li><b>Escala Beaufort</b>: mide la fuerza del viento de 0 a 12.</li>
+</ul>` },
+ { h:'Viento aparente, brisas y mar', b:`
+<ul>
+<li><b>Viento aparente</b>: el que sientes yendo en el barco. Con viento por la <b>popa</b> se <b>resta</b> tu velocidad: viento real 16 nudos, vas a 6, sientes 10. De proa se suma.</li>
+<li><b>Brisa marina</b> (de día): sopla del <b>mar hacia la tierra</b>. <b>Terral</b> (de noche): de tierra al mar.</li>
+<li><b>Fetch</b>: la distancia de mar abierta por la que sopla el viento sin obstáculos. Cuanto mayor, más grande la ola.</li>
+<li><b>Mar de viento</b> lo crea el viento de ahora. <b>Mar de fondo</b> viene de lejos.</li>
+</ul>` },
+ { h:'Frentes, nubes y señales', b:`
+<ul>
+<li>Presión que <b>baja deprisa</b>: se acerca mal tiempo. Si <b>sube</b>, mejora.</li>
+<li><b>Cumulonimbos</b>: nubes altas y oscuras de tormenta.</li>
+<li><b>Cúmulos</b> pequeños y aislados: buen tiempo.</li>
+<li><b>Frente frío</b>: baja la temperatura y vienen chubascos y rachas fuertes.</li>
+<li><b>Frente cálido</b>: nubes bajas, lluvia suave y continua.</li>
+</ul>` }
+]},
+{ id:10, n:5, t:'Teoría de navegación', d:'Coordenadas, rumbos, correcciones y mareas.', lessons:[
+ { h:'Coordenadas y unidades', b:`
+<ul>
+<li><b>Latitud</b>: de 0° a 90° desde el ecuador, hacia el norte o el sur.</li>
+<li><b>Longitud</b>: de 0° a 180° desde el meridiano de Greenwich, hacia el este o el oeste.</li>
+<li><b>1 milla náutica</b> = 1.852 m = <b>1 minuto de latitud</b>.</li>
+<li><b>1 nudo</b> = 1 milla por hora.</li>
+<li>Distancia = velocidad × tiempo.</li>
+<li><b>Hora reloj bitácora (HRB)</b>: la que marca el reloj de a bordo.</li>
+</ul>` },
+ { h:'Rumbos y correcciones', b:`
+<ul>
+<li><b>Rumbo</b>: ángulo entre el norte y la dirección de la proa (de 000° a 360°).</li>
+<li><b>Declinación magnética (dm)</b>: diferencia entre el norte verdadero y el magnético. Viene en la carta.</li>
+<li><b>Desvío (Δ)</b>: error de la aguja por los hierros del propio barco.</li>
+<li><b>Corrección total</b>: <code>Ct = dm + Δ</code>. Este o NE es <b>+</b>, oeste o NW es <b>−</b>.</li>
+<li>De aguja a verdadero: <code>Rv = Ra + Ct</code>.</li>
+<li>De verdadero a aguja: <code>Ra = Rv − Ct</code>.</li>
+</ul>` },
+ { h:'Marcaciones, mareas y luces', b:`
+<ul>
+<li><b>Marcación</b>: ángulo entre la <b>proa</b> y el objeto.</li>
+<li><b>Demora</b>: ángulo entre el <b>norte</b> y el objeto. <code>Dv = Rv + marcación</code> (estribor +, babor −).</li>
+<li><b>Enfilación</b>: dos puntos conocidos alineados.</li>
+<li><b>Cero hidrográfico</b>: el nivel desde el que se miden las sondas de la carta.</li>
+<li><b>Profundidad real</b> = sonda + altura de la marea.</li>
+<li><b>Pleamar</b>: marea alta. <b>Bajamar</b>: marea baja.</li>
+</ul>` }
+]},
+{ id:11, n:4, t:'Carta de navegación', d:'Cálculos con rumbos, tiempos y distancias. Necesitas 2 de 4.', lessons:[
+ { h:'Cómo se resuelven', b:`
+<p>En el examen te dan la <b>carta del Estrecho</b> y haces los cálculos con regla, compás y transportador. Con las fórmulas de la teoría 10 son sumas y restas.</p>
+<ol>
+<li>Pasa el rumbo de <b>aguja a verdadero</b> con la corrección total.</li>
+<li>Dibuja la línea en la carta y mide la distancia.</li>
+<li>Con <b>velocidad × tiempo</b> calcula la distancia o la hora de llegada.</li>
+<li>Para situarte, cruza <b>dos líneas de posición</b> (dos demoras o marcaciones).</li>
+</ol>
+<p class="tip">Trabajo extra: practica con una carta real y su instrumental. Aquí entrenas los cálculos, no el dibujo.</p>` }
+]}
+];
+// Cada pregunta: [unidad.lección, enunciado, [correcta, mala, mala, mala], explicación, dibujo opcional]
+// Preguntas originales escritas para este estudio, basadas en el temario oficial. No son las del examen real.
+const RAW = [
+// ===== 1 Nomenclatura =====
+['1.0','Estás en el centro del barco mirando hacia la proa. ¿Qué lado es babor?',['El izquierdo','El derecho','El de atrás','El de delante'],'Babor es la izquierda mirando a proa. Estribor es la derecha.'],
+['1.0','¿Qué es la amura?',['La parte curva del casco a cada lado de la proa','La parte curva del casco a cada lado de la popa','El centro del barco','El fondo del casco'],'La amura está en la proa. La parte curva de la popa es la aleta.'],
+['1.0','Un objeto está justo a 90° de la proa, a tu derecha. ¿Dónde está?',['Por el través de estribor','Por la aleta de estribor','Por la amura de babor','Por la proa'],'Través es el lado, a 90° de la proa. Estribor es la derecha.'],
+['1.1','¿Qué es el calado?',['La distancia vertical entre la línea de flotación y la parte más baja de la quilla','La altura del casco fuera del agua','El largo del barco','El ancho máximo del barco'],'El calado es lo que se hunde el barco. La altura fuera del agua es el francobordo.'],
+['1.1','El asiento de un barco es…',['La diferencia entre el calado de popa y el de proa','La inclinación hacia un costado','La altura de la cubierta al fondo','El peso de la carga'],'Si el barco va más hundido de popa que de proa, tiene asiento.'],
+['1.1','Un barco se inclina hacia un costado. Esa inclinación se llama…',['Escora','Asiento','Francobordo','Puntal'],'Escora es la inclinación lateral. Eliminar la escora es enderezar el barco.'],
+['1.1','¿Qué es el francobordo?',['La altura del casco que queda fuera del agua','La parte sumergida del casco','La longitud total del barco','La altura de la quilla'],'Va de la línea de flotación a la cubierta.'],
+['1.1','La obra viva es…',['La parte del casco que va sumergida','La parte que está fuera del agua','La cubierta','El motor'],'Obra viva = sumergida (carena). Obra muerta = la que queda fuera.'],
+['1.2','Una hélice dextrógira, en marcha avante, gira…',['En el sentido de las agujas del reloj, mirando desde popa','En sentido contrario a las agujas del reloj','Solo en marcha atrás','No gira'],'Dextrógira es «a derechas». Levógira es «a izquierdas».'],
+['1.2','¿Cómo se llama la anilla del ancla a la que se une la cadena?',['Arganeo','Cepo','Uña','Escoben'],'El arganeo es la anilla. Las uñas son las que se clavan en el fondo.'],
+// ===== 2 Amarre y fondeo =====
+['2.0','¿Qué nudo sirve para unir dos cabos del mismo grosor?',['Nudo llano','As de guía','Ballestrinque','Nudo de ocho'],'El nudo llano une dos cabos iguales. El as de guía hace un lazo que no se corre.'],
+['2.0','¿Qué nudo hace un lazo que no se corre y es ideal para amarrar a una anilla?',['As de guía','Nudo llano','Ballestrinque','Vuelta de braza'],'El as de guía es el nudo más útil a bordo.'],
+['2.0','¿Para qué sirve un esprín al amarrar a un muelle?',['Para evitar que el barco se mueva hacia delante o hacia atrás','Para mantener el barco pegado al muelle de lado','Para sujetar el ancla','Para izar la bandera'],'Los esprines van cruzados. Los traveses mantienen el barco pegado al muelle.'],
+['2.1','¿Qué fondo es mejor para que el ancla agarre bien?',['Arena o fango','Roca lisa','Algas o posidonia','Piedras sueltas'],'La arena y el fango dejan que el ancla se clave.'],
+['2.1','Cuando se dice que el ancla «garrea»…',['No agarra y se arrastra por el fondo','Está bien clavada','Se ha roto la cadena','Está subiendo'],'Garrear = arrastrarse. El barco se desplaza sin que lo notes.'],
+['2.1','Hay viento fuerte y vas a fondear. ¿Qué conviene hacer?',['Largar más cadena (más escopo)','Largar menos cadena','Fondear sobre rocas','Parar el motor y no echar ancla'],'Más cadena = el ancla tira más horizontal y agarra mejor.'],
+['2.1','Cuando la cadena está «a pique»…',['Está vertical y el ancla está a punto de despegar del fondo','El ancla está clavada con fuerza','La cadena está floja','El barco está atracado'],'«A pique» es la última fase antes de que el ancla salga del fondo.'],
+// ===== 3 Seguridad =====
+['3.0','Antes de salir a navegar, ¿qué debes dejar a alguien de confianza en tierra?',['Tu plan de ruta y la hora prevista de regreso','Las llaves del barco','El dinero del combustible','Una copia del título del barco'],'Así sabrán que algo va mal si no vuelves a la hora.'],
+['3.0','La estabilidad de un barco es…',['La capacidad de volver a su posición de equilibrio tras inclinarse','La velocidad máxima que alcanza','La fuerza del motor','La altura del casco'],'Repartir bien el peso mejora la estabilidad.'],
+['3.1','¿Qué canal de la radio VHF se usa para pedir socorro?',['El canal 16','El canal 9','El canal 68','El canal 72'],'El canal 16 es el de socorro, seguridad y llamada.'],
+['3.1','¿Cuál es el teléfono de Salvamento Marítimo?',['900 202 202','091','900 100 100','061'],'También se puede llamar al 112.'],
+['3.1','En un temporal quieres «capear». ¿Cómo lo haces?',['Con la mínima velocidad que mantenga el gobierno y la proa hacia las olas','Con el barco de costado a las olas','A máxima velocidad con olas por la popa','Parando el motor y dejándote llevar'],'Capear es aguantar el temporal con la proa a las olas.'],
+['3.1','Alguien cae al agua. ¿Qué haces primero?',['Gritar «hombre al agua», lanzarle un aro salvavidas y no perderlo de vista','Tirarte tú al agua','Seguir navegando y avisar por radio','Parar los motores y esperar'],'Lo primero es avisar y no perder de vista a la persona.'],
+['3.1','En un remolque, el cabo debe ser…',['Largo, resistente y amarrado a puntos firmes','Corto y atado a la barandilla','Fino para que no pese','Atado al timón'],'Un remolque tira con mucha fuerza. Las barandillas se pueden arrancar.'],
+['3.1','Una bengala roja de mano indica…',['Socorro (peligro)','Que estás fondeado','Que hay buzos','Que pasas a un pesquero'],'El rojo es la señal de socorro: bengala, cohete con paracaídas.'],
+['3.1','¿Qué hace una radiobaliza EPIRB al activarse?',['Envía una señal de socorro con tu posición por satélite','Enciende las luces de navegación','Mide la profundidad','Avisa de tormentas'],'Es una de las ayudas más importantes en alta mar.'],
+// ===== 4 Legislación =====
+['4.0','¿Se pueden tirar plásticos al mar?',['No, nunca','Sí, si son pequeños','Sí, a más de 3 millas','Solo de noche'],'Los plásticos no se pueden verter nunca.'],
+['4.0','¿Estás obligado a prestar auxilio a quien esté en peligro en el mar?',['Sí, si no pones en grave peligro tu barco ni a tu gente','No, es cosa de Salvamento Marítimo','Solo si es de tu nacionalidad','Solo si te lo pide la radio'],'La obligación de auxilio es una norma marítima básica.'],
+['4.0','¿Dónde no debes fondear?',['Sobre praderas de posidonia','Sobre arena','Sobre fango','En una zona de fondeo señalizada'],'La posidonia está protegida y el ancla la arranca.'],
+['4.0','¿Dónde se iza la bandera de España en una embarcación española?',['En la popa','En la proa','En el través','No es obligatoria'],'El pabellón nacional va en popa.'],
+['4.0','Las zonas de baño balizadas…',['Están prohibidas a la navegación, salvo por los canales de acceso señalizados','Son zona de fondeo libre','Son zona de pesca','Se pueden cruzar a máxima velocidad'],'Los bañistas no pueden ver ni evitar tu barco.'],
+['4.0','La bandera «A» del código internacional (azul y blanca) significa…',['Tengo buzos sumergidos: mantente alejado y despacio','Necesito un práctico','Estoy en cuarentena','Hay un hombre al agua'],'Bandera «A»: buzos. No confundir con la bandera roja con franja blanca (buceo deportivo).'],
+['4.0','¿Qué documentos debes llevar a bordo?',['Tu título, la documentación de la embarcación y el seguro de responsabilidad civil','Solo el DNI','Solo el seguro','Solo el título de propiedad'],'Son los tres documentos básicos.'],
+// ===== 5 Balizamiento =====
+['5.0','¿Cómo es una marca lateral de babor en Región A?',['Roja, cilíndrica','Verde, cónica','Amarilla, con aspa','Negra con bandas rojas'],'Babor = roja y cilíndrica. Estribor = verde y cónica.'],
+['5.0','¿Cómo es una marca lateral de estribor en Región A?',['Verde, cónica con la punta hacia arriba','Roja, cilíndrica','Amarilla con X','Franjas rojas y blancas'],'Verde y cónica.'],
+['5.0','Entras a puerto desde el mar. Ves una boya roja. ¿Por dónde debe quedar?',['Por tu babor (izquierda)','Por tu estribor (derecha)','Debes pasar por encima','Es indiferente'],'Al entrar a puerto, rojo a la izquierda y verde a la derecha.'],
+['5.0','Esta boya tiene franjas verticales rojas y blancas y una esfera roja. ¿Qué es?',['Marca de aguas navegables','Marca de peligro aislado','Marca cardinal Norte','Marca especial'],'Marca el centro del canal y se puede pasar por cualquier lado.','safe'],
+['5.1','Esta marca cardinal es…',['Norte','Sur','Este','Oeste'],'Dos conos con la punta hacia arriba, negro arriba y amarillo abajo.','N'],
+['5.1','Esta marca cardinal es…',['Este','Oeste','Norte','Sur'],'Conos base con base y negro, amarillo, negro.','E'],
+['5.1','Esta marca cardinal es…',['Sur','Norte','Este','Oeste'],'Dos conos con la punta hacia abajo, amarillo arriba y negro abajo.','S'],
+['5.1','Esta marca cardinal es…',['Oeste','Este','Norte','Sur'],'Conos punta con punta (reloj de arena), amarillo, negro, amarillo.','W'],
+['5.1','Una luz blanca centelleante continua en una marca cardinal indica…',['Norte','Este','Sur','Oeste'],'Este: 3 centelleos. Sur: 6 y 1 larga. Oeste: 9. Norte: continua.'],
+['5.1','Una luz blanca con 9 centelleos pertenece a la marca…',['Oeste','Este','Sur','Norte'],'Como el 9 en el reloj: las 9 es el oeste.'],
+['5.1','Si ves una marca cardinal Norte, ¿por dónde debes pasar?',['Por el norte de ella','Por el sur de ella','Por el este de ella','Por encima'],'Siempre pasas por el lado que dice su nombre.'],
+['5.2','Esta marca tiene bandas negras y rojas y dos esferas negras. ¿Qué es?',['Un peligro aislado','Una marca cardinal','Una marca especial','Un canal principal'],'Marca un peligro pequeño. Hay agua navegable alrededor.','isol'],
+['5.2','Esta marca amarilla con una X amarilla es…',['Una marca especial','Una marca de aguas navegables','Un peligro aislado','Una marca cardinal Norte'],'Marcan zonas de ocio, cables, etc.','special'],
+['5.2','Esta marca tiene el cuerpo rojo con una banda ancha verde y un tope cilíndrico rojo. ¿Qué indica?',['Bifurcación: se deja por babor y el canal principal queda a estribor','Bifurcación: se deja por estribor y el canal principal queda a babor','Un peligro aislado','Aguas navegables'],'El tope rojo dice «déjala por babor». La banda verde dice que el canal principal es a estribor.','prefStbd'],
+['5.3','Una luz blanca que está 2 s encendida y 2 s apagada es de tipo…',['Isofase (Iso)','Ocultaciones (Oc)','Destello (Fl)','Fija (F)'],'Isofase: luz y oscuridad iguales.'],
+['5.3','Una luz de «ocultaciones» (Oc) tiene…',['Más tiempo de luz que de oscuridad','Más oscuridad que luz','Igual luz que oscuridad','Solo luz fija'],'Oc es lo contrario del destello: se apaga un momento.'],
+['5.3','¿Qué significa «Fl(3) G 10s»?',['Luz verde con 3 destellos cada 10 segundos','Luz roja con 3 destellos cada 10 s','Luz verde fija de 10 s','Luz blanca con 3 ocultaciones'],'Fl = destello, G = verde, 10s = el ciclo dura 10 s.'],
+['5.3','La Región A del balizamiento IALA es la que se usa en…',['Europa, África y gran parte de Asia','América','Solo en España','Solo en el Mediterráneo'],'En América se usa la Región B, con los colores de babor y estribor invertidos.'],
+// ===== 6 Reglamento (RIPA) =====
+['6.0','Un barco se acerca y su demora de compás no cambia. ¿Qué ocurre?',['Hay riesgo de abordaje','No hay peligro','Te está alcanzando','Va a parar'],'Si la demora no cambia y la distancia baja, vais a chocar.'],
+['6.0','La «velocidad de seguridad» es la que…',['Te permite maniobrar con eficacia y parar a tiempo según las condiciones','Es la máxima del motor','Es siempre 5 nudos','Es la que marca la carta'],'Depende de la visibilidad, el tráfico y el mar.'],
+['6.0','La maniobra para evitar un abordaje debe ser…',['Clara, con tiempo y lo bastante grande para que la vea el otro','Pequeña, para no molestar','Lo más tarde posible','Siempre hacia babor'],'Si es pequeña o tardía, el otro no la entiende.'],
+['6.1','Dos barcos de motor se acercan de frente, con rumbos opuestos. ¿Qué haces?',['Cada uno cae a estribor y os cruzáis por babor','Cada uno cae a babor','Cede el más pequeño','Os paráis'],'Los dos a estribor, como en la carretera.'],
+['6.1','Dos barcos de motor se cruzan. Ves al otro por tu estribor (derecha). ¿Quién cede?',['Tú','El otro','El más lento','Nadie'],'Quien ve al otro por estribor cede.'],
+['6.1','Si el otro barco te ve por su estribor y tú por su babor, ¿qué haces?',['Mantienes rumbo y velocidad','Cedes y cambias de rumbo','Paras el motor','Haces sonar 5 pitadas cortas'],'Eres el que tiene preferencia. Solo maniobras si el otro no cede.'],
+['6.1','Un barco que alcanza a otro por detrás (desde más de 22,5° a popa del través) debe…',['Apartarse de su derrota','Mantener rumbo y velocidad','Acelerar mucho','Hacer sonar 1 pitada larga'],'El que alcanza siempre cede, sea del tipo que sea.'],
+['6.1','Dos veleros: uno tiene el viento por babor y el otro por estribor. ¿Quién cede?',['El que tiene el viento por babor','El que tiene el viento por estribor','El más pequeño','El de sotavento'],'Viento por babor = cede.'],
+['6.1','Dos veleros con el viento por el mismo costado. ¿Quién cede?',['El de barlovento','El de sotavento','El más grande','Ninguno'],'El de barlovento está más cerca del viento y tiene más margen de maniobra.'],
+['6.2','¿Qué buque tiene prioridad sobre todos los demás?',['El buque sin gobierno','El velero','El barco de motor','El pesquero con artes'],'Orden de más a menos prioridad: sin gobierno, maniobra restringida, pesca, vela, motor.'],
+['6.2','Un velero y un barco de motor se cruzan. ¿Quién suele ceder?',['El de motor','El velero','El más rápido','Quien esté a babor'],'Salvo que el de motor esté alcanzando al velero.'],
+['6.2','Al cruzar un dispositivo de separación del tráfico debes hacerlo…',['Con rumbo lo más perpendicular posible','En diagonal para tardar menos','Navegando en sentido contrario','Parado'],'Así pasas el menor tiempo posible dentro.'],
+['6.2','En un canal estrecho debes navegar…',['Por el lado de estribor del canal, cerca de su límite exterior','Por el centro','Por el lado de babor','Por el lado que tenga más agua'],'Como en la carretera, por la derecha.'],
+['6.3','¿Cómo se llama la luz blanca que se ve desde atrás en un barco?',['Luz de alcance (o de popa)','Luz de tope','Luz de costado','Luz de fondeo'],'Cubre 135° hacia atrás.'],
+['6.3','Solo ves la luz blanca de popa de otro barco. ¿Qué situación es?',['Lo estás alcanzando y cedes tú','Te está alcanzando él','Os cruzáis','Va fondeado'],'Ver solo la luz de popa = estás por detrás.'],
+['6.3','Un velero fondeado, de día, muestra…',['Una bola negra en la proa','Un cono negro punta abajo','Dos bolas negras','Un cilindro negro'],'Fondeado = una bola.'],
+['6.3','Un velero navega con el motor en marcha. De día muestra…',['Un cono negro con la punta hacia abajo','Una bola negra','Un cilindro negro','Un rombo negro'],'Con motor cuenta como buque de propulsión mecánica.'],
+['6.3','Un barco de motor de 60 m navegando de noche lleva…',['Dos luces de tope (la de popa más alta), costado y alcance','Una luz de tope y nada más','Solo luz roja','Solo luz verde'],'Desde 50 m, dos luces de tope.'],
+['6.3','Un velero de 8 m navegando de noche lleva…',['Luces de costado (roja y verde) y luz de alcance','Una luz roja en todo el horizonte','Dos luces de tope','Una luz amarilla'],'Pueden estar combinadas en un solo farol en el palo.'],
+['6.3','Dos luces rojas en vertical, visibles en todo el horizonte, indican…',['Un buque sin gobierno','Un buque fondeado','Un barco remolcando','Un velero'],'De día serían dos bolas negras.'],
+['6.4','En niebla, un barco de motor con arrancada emite…',['Una pitada larga cada 2 minutos como máximo','Dos pitadas largas','Campana rápida','Una larga y dos cortas'],'Parado y sin arrancada son dos largas.'],
+['6.4','En niebla, un barco de motor parado (sin arrancada) emite…',['Dos pitadas largas cada 2 minutos como máximo','Una pitada larga','Una larga y dos cortas','Cinco cortas'],'Con arrancada es una larga.'],
+['6.4','Una pitada corta significa…',['Caigo a estribor','Caigo a babor','Voy atrás','No te entiendo'],'1 corta = estribor, 2 cortas = babor, 3 cortas = atrás.'],
+['6.4','Cinco pitadas cortas significan…',['No entiendo tus intenciones o hay peligro','Caigo a babor','Voy atrás','Estoy fondeado'],'Es la señal de duda.'],
+['6.4','En niebla, un velero emite…',['Una pitada larga y dos cortas cada 2 minutos como máximo','Una larga','Dos largas','Campana rápida'],'Lo mismo que pesca, sin gobierno y remolque.'],
+['6.4','En niebla, un barco fondeado emite…',['Campana rápida unos 5 segundos cada minuto','Una pitada larga','Dos largas','Nada'],'Fondeado = campana.'],
+// ===== 7 Maniobra =====
+['7.0','Con la caña del timón hacia babor, la proa irá hacia…',['Estribor','Babor','Recto','Depende del viento'],'La caña se mueve al lado contrario del giro.'],
+['7.0','Hélice dextrógira en marcha atrás: la popa tiende a ir hacia…',['Babor','Estribor','Recto','Arriba'],'Es un efecto de la hélice. Hay que contar con él al atracar.'],
+['7.0','Para atracar con viento o corriente fuerte conviene acercarse…',['Con la proa contra el viento o la corriente','Con la popa contra el viento','De costado','A máxima velocidad'],'Así tienes más control y puedes frenar sin que te empujen.'],
+['7.0','Con rueda de timón, para virar a estribor…',['Giras la rueda a estribor','Giras la rueda a babor','Mueves la caña a estribor','Cambias la hélice'],'La rueda funciona como la de un coche.'],
+['7.0','Al meter timón para girar, la popa se…',['Abre hacia el lado contrario al giro','Cierra hacia el lado del giro','Queda fija','Se hunde'],'El barco gira alrededor de un punto cercano al centro.'],
+// ===== 8 Emergencias =====
+['8.0','Una persona tiene una hemorragia externa. ¿Qué haces primero?',['Presionar directamente sobre la herida con una gasa limpia','Aplicar un torniquete siempre','Darle de beber','Lavar la herida con agua de mar'],'La presión directa es lo primero.'],
+['8.0','¿Con qué se apaga un fuego eléctrico?',['Con extintor de CO₂ o de polvo, nunca con agua','Con agua','Con espuma de jabón','Con una manta mojada'],'El agua conduce la electricidad.'],
+['8.0','Apagar un fuego por sofocación consiste en eliminar…',['El comburente (el oxígeno)','El combustible','El calor','La reacción en cadena'],'Sofocar = cubrir el fuego para que no tenga aire.'],
+['8.0','El tetraedro del fuego tiene cuatro elementos. ¿Cuáles son?',['Combustible, comburente, calor y reacción en cadena','Humo, calor, madera y aire','Combustible, agua, aire y calor','Gas, calor, chispa y aire'],'Quitas uno y el fuego se apaga.'],
+['8.0','Hay una vía de agua. Lo primero es…',['Localizarla y taponarla mientras se achica','Dejar el barco','Aumentar la velocidad','Abrir las escotillas'],'Taponar y achicar a la vez.'],
+['8.0','Un tripulante tiene hipotermia. ¿Qué haces?',['Quitarle la ropa mojada, abrigarlo y darle bebida caliente sin alcohol','Frotarle fuerte la piel','Darle alcohol','Meterlo en agua muy caliente'],'Frotar o dar alcohol empeora el cuadro.'],
+['8.0','El abandono del barco es…',['El último recurso: mientras el barco flote es más seguro quedarse a bordo','La primera acción ante cualquier avería','Obligatorio con viento fuerza 5','Siempre mejor que pedir ayuda'],'La balsa se usa cuando ya no hay otra opción.'],
+['8.0','Te has varado. ¿Qué haces?',['Parar el motor, revisar heridos y daños y sondar alrededor','Dar máquina atrás a fondo enseguida','Encender los motores a tope','Echar a todos al agua'],'Forzar el motor puede empeorar los daños.'],
+// ===== 9 Meteorología =====
+['9.0','Una isobara es una línea que une puntos de igual…',['Presión atmosférica','Temperatura','Humedad','Altura de ola'],'Iso = igual. Baro = presión.'],
+['9.0','Isobaras muy juntas en un mapa del tiempo indican…',['Viento fuerte','Calma','Niebla','Marea alta'],'Cuanto más juntas, más rápido cambia la presión.'],
+['9.0','Un anticiclón (alta presión) suele traer…',['Tiempo estable y bueno','Lluvia y temporal','Tormentas','Niebla densa siempre'],'Una borrasca trae nubes, lluvia y viento.'],
+['9.0','Un viento del NW es el que…',['Viene del noroeste','Va hacia el noroeste','Sopla del sureste','Sopla del noreste'],'Al viento se le nombra por de dónde viene.'],
+['9.0','La escala que clasifica la fuerza del viento es la…',['Beaufort','Douglas','Richter','Celsius'],'Beaufort va de 0 a 12. La Douglas mide el estado de la mar.'],
+['9.1','¿Qué es el fetch?',['La extensión de mar sobre la que sopla el viento sin obstáculos','La altura de la ola','El tiempo entre olas','La temperatura del agua'],'Cuanto más fetch, más grande puede ser la ola.'],
+['9.1','Viento real de 16 nudos por la popa. Navegas a 6 nudos. El viento aparente es de…',['10 nudos','22 nudos','16 nudos','6 nudos'],'Por la popa se resta: 16 − 6 = 10.'],
+['9.1','La brisa marina (de día) sopla…',['Del mar hacia la tierra','De la tierra hacia el mar','Del norte al sur','Solo en invierno'],'De noche sopla el terral, de tierra al mar.'],
+['9.2','La presión baja rápido y se ven nubes cumulonimbos. Es probable que haya…',['Tormenta','Calma y buen tiempo','Niebla de radiación','Un anticiclón'],'Mal tiempo a la vista.'],
+['9.2','Un frente frío trae normalmente…',['Descenso de temperatura, chubascos y rachas de viento','Lluvia suave y continua','Calma total','Subida de temperatura'],'Lluvia suave y continua es del frente cálido.'],
+// ===== 10 Teoría de navegación =====
+['10.0','La latitud se mide…',['De 0° a 90° desde el ecuador, al norte o al sur','De 0° a 180° desde Greenwich','De 0° a 360°','Solo al norte'],'La longitud va de 0° a 180° desde Greenwich.'],
+['10.0','La longitud se mide…',['De 0° a 180° desde Greenwich, al este o al oeste','De 0° a 90° desde el ecuador','Solo al este','De 0° a 360° al norte'],'Greenwich es el meridiano 0.'],
+['10.0','Una milla náutica equivale a…',['1.852 metros','1.000 metros','1.609 metros','3.000 metros'],'1.609 m es la milla terrestre.'],
+['10.0','Un minuto de latitud equivale a…',['Una milla náutica','Un kilómetro','Un nudo','Diez millas'],'Por eso se miden las distancias en la escala de latitud.'],
+['10.0','Un nudo es…',['Una milla náutica por hora','Un kilómetro por hora','Una milla terrestre por hora','Un metro por segundo'],'10 nudos = 10 millas en una hora.'],
+['10.0','La hora reloj de bitácora (HRB) es…',['La que marca el reloj de a bordo','La hora de Greenwich','La hora de la marea','La hora de salida del sol'],'Es la hora que usas en tu navegación.'],
+['10.1','El rumbo es…',['El ángulo entre el norte y la dirección de la proa','El ángulo entre la proa y un objeto','La distancia recorrida','La velocidad del barco'],'Va de 000° a 360°.'],
+['10.1','El desvío de la aguja lo causan…',['Los hierros y campos eléctricos del propio barco','El norte verdadero','La marea','El viento'],'Cada barco tiene su propio desvío.'],
+['10.1','La declinación magnética es…',['El ángulo entre el norte verdadero y el magnético','El error por los hierros del barco','La inclinación de la aguja','La hora de salida'],'Se lee en la carta, en la rosa de los vientos.'],
+['10.1','La corrección total se calcula como…',['Declinación magnética + desvío (con sus signos)','Rumbo − distancia','Latitud + longitud','Desvío − velocidad'],'Ct = dm + Δ.'],
+['10.2','La marcación de un objeto es…',['El ángulo entre la proa y el objeto','El ángulo entre el norte y el objeto','La distancia al objeto','La altura del objeto'],'Demora = desde el norte. Marcación = desde la proa.'],
+['10.2','Una enfilación es…',['Dos objetos conocidos que se ven alineados','El rumbo del barco','La distancia a un faro','La corriente'],'Te da una línea de posición muy precisa.'],
+['10.2','El cero hidrográfico es…',['El nivel desde el que se miden las sondas de la carta','El nivel de la pleamar','La profundidad media','La orilla'],'Las sondas están referidas a ese nivel.'],
+// ===== 11 Carta de navegación (cálculos) =====
+['11.0','Declinación 3° NW (−3°) y desvío +2°. ¿Cuánto vale la corrección total?',['−1°','+1°','−5°','+5°'],'Ct = −3 + 2 = −1°.'],
+['11.0','Rumbo de aguja 080° y Ct = −5°. ¿Cuál es el rumbo verdadero?',['075°','085°','080°','070°'],'Rv = Ra + Ct = 80 − 5 = 075°.'],
+['11.0','Rumbo verdadero 120° y Ct = +4°. ¿Cuál es el rumbo de aguja?',['116°','124°','120°','112°'],'Ra = Rv − Ct = 120 − 4 = 116°.'],
+['11.0','Navegas a 6 nudos durante 90 minutos. ¿Qué distancia recorres?',['9 millas','6 millas','12 millas','15 millas'],'90 min = 1,5 h. 6 × 1,5 = 9 millas.'],
+['11.0','Recorres 12 millas a 8 nudos. ¿Cuánto tardas?',['1 hora y 30 minutos','1 hora','2 horas','45 minutos'],'12 ÷ 8 = 1,5 horas.'],
+['11.0','Sales a las 10:30 y tienes 15 millas a 6 nudos. ¿A qué hora llegas?',['13:00','12:30','13:30','12:00'],'15 ÷ 6 = 2,5 horas. 10:30 + 2:30 = 13:00.'],
+['11.0','¿Qué rumbo corresponde al suroeste?',['225°','135°','270°','315°'],'Norte 000, Este 090, Sur 180, Oeste 270. El suroeste está en medio de sur y oeste.'],
+['11.1','Estás en 43°20\'N y navegas 15 millas hacia el norte. ¿Cuál es tu nueva latitud?',['43°35\'N','43°05\'N','43°20\'N','44°20\'N'],'1 milla = 1 minuto de latitud. 20\' + 15\' = 35\'.'],
+['11.1','Rumbo verdadero 045° y ves un faro con marcación 30° por estribor. ¿Cuál es la demora verdadera?',['075°','015°','045°','030°'],'Estribor suma. 45 + 30 = 075°.'],
+['11.1','En la carta la sonda es de 2,5 m y la marea está 1,0 m por encima del cero. ¿Cuál es la profundidad real?',['3,5 m','1,5 m','2,5 m','3,0 m'],'Profundidad real = sonda + altura de la marea.'],
+['11.1','Navegas a 5 nudos durante 24 minutos. ¿Qué distancia recorres?',['2 millas','5 millas','1 milla','4 millas'],'24 min = 0,4 h. 5 × 0,4 = 2 millas.']
+];
+(function(){
+const app=document.getElementById('app');
+const BANK=RAW.map((r,i)=>({id:i,u:+r[0].split('.')[0],l:+r[0].split('.')[1],q:r[1],o:r[2],e:r[3],s:r[4]||null}));
+const UBY={};UNITS.forEach(u=>UBY[u.id]=u);
+const EXAM_MIN={5:3,6:5,11:2};            // aciertos mínimos por bloque
+const PASS=32, TOTAL=45, MINUTES=90;
+
+/* ---------- almacenamiento (tolerante a fallos) ---------- */
+const mem={};
+const store={
+  get(k){try{const v=localStorage.getItem(k);if(v!==null)return JSON.parse(v)}catch(e){}return mem[k]===undefined?null:mem[k]},
+  set(k,v){mem[k]=v;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+let S=store.get('rumbo-per-1')||{q:{},lessons:{},sims:[]};
+S.q=S.q||{};S.lessons=S.lessons||{};S.sims=S.sims||[];
+const save=()=>store.set('rumbo-per-1',S);
+function record(id,ok){const e=S.q[id]||{n:0,ok:0,last:null};e.n++;if(ok)e.ok++;e.last=ok;S.q[id]=e;save()}
+
+/* ---------- utilidades ---------- */
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pct=(a,b)=>b?Math.round(100*a/b):0;
+let timerId=null;
+const clearTimer=()=>{if(timerId){clearInterval(timerId);timerId=null}};
+const mkItem=q=>({q,order:shuffle([0,1,2,3]),pick:null});
+const isOk=it=>it.pick!==null&&it.order[it.pick]===0;
+function unitStats(uid){
+  const qs=BANK.filter(q=>q.u===uid);let n=0,ok=0,seen=0;
+  qs.forEach(q=>{const e=S.q[q.id];if(e){seen++;n+=e.n;ok+=e.ok}});
+  return {total:qs.length,seen,n,ok};
+}
+function lessonsDone(uid){return UNITS.find(u=>u.id===uid).lessons.filter((_,i)=>S.lessons[uid+'.'+i]).length}
+
+/* ---------- boyas en SVG ---------- */
+let svgN=0;
+const COL={r:'#d63a2c',g:'#1f9d55',y:'#f2c200',k:'#1b1b1b',w:'#ffffff'};
+const SHAPE={can:'M18 42h28v38H18z',cone:'M13 80L51 80L41 42L23 42Z',pillar:'M23 42h18v38H23z',sphere:'M13 61a19 19 0 1 0 38 0a19 19 0 1 0 -38 0z'};
+const BUOYS={
+  port:{b:'can',bands:['r'],top:'cyl',tc:'r'},
+  stbd:{b:'cone',bands:['g'],top:'coneUp',tc:'g'},
+  safe:{b:'sphere',v:['r','w','r','w'],top:'ball',tc:'r'},
+  N:{b:'pillar',bands:['k','y'],top:'N',tc:'k'},
+  S:{b:'pillar',bands:['y','k'],top:'S',tc:'k'},
+  E:{b:'pillar',bands:['k','y','k'],top:'E',tc:'k'},
+  W:{b:'pillar',bands:['y','k','y'],top:'W',tc:'k'},
+  isol:{b:'pillar',bands:['k','r','k'],top:'two',tc:'k'},
+  special:{b:'can',bands:['y'],top:'X',tc:'y'},
+  prefStbd:{b:'can',bands:['r','g','r'],top:'cyl',tc:'r'},
+  prefPort:{b:'cone',bands:['g','r','g'],top:'coneUp',tc:'g'}
+};
+const LABEL={port:'Babor',stbd:'Estribor',safe:'Aguas navegables',N:'Norte',E:'Este',S:'Sur',W:'Oeste',isol:'Peligro aislado',special:'Especial',prefStbd:'Bifurcación: canal a estribor',prefPort:'Bifurcación: canal a babor'};
+function topmark(t,c){
+  const f=`fill="${COL[c]}" stroke="var(--ink)" stroke-width="1" stroke-linejoin="round"`;
+  const P=(p)=>`<polygon points="${p}" ${f}/>`;
+  switch(t){
+    case 'cyl':return `<rect x="26" y="8" width="12" height="16" ${f}/>`;
+    case 'coneUp':return P('32,6 40,24 24,24');
+    case 'ball':return `<circle cx="32" cy="16" r="8" ${f}/>`;
+    case 'N':return P('32,3 39,13 25,13')+P('32,14 39,24 25,24');
+    case 'S':return P('25,3 39,3 32,13')+P('25,14 39,14 32,24');
+    case 'E':return P('32,3 39,13 25,13')+P('25,13 39,13 32,23');
+    case 'W':return P('25,3 39,3 32,13')+P('32,13 39,23 25,23');
+    case 'two':return `<circle cx="32" cy="8" r="5" ${f}/><circle cx="32" cy="20" r="5" ${f}/>`;
+    case 'X':return `<g transform="rotate(45 32 16)"><rect x="29" y="3" width="6" height="26" ${f}/><rect x="19" y="13" width="26" height="6" ${f}/></g>`;
+  }return '';
+}
+function buoy(key){
+  const c=BUOYS[key];if(!c)return '';
+  const id='cl'+(++svgN);
+  let inner='';
+  if(c.v){const w=38/c.v.length;c.v.forEach((k,i)=>inner+=`<rect x="${13+i*w}" y="40" width="${w+.5}" height="42" fill="${COL[k]}"/>`)}
+  else{const h=38/c.bands.length;c.bands.forEach((k,i)=>inner+=`<rect x="10" y="${42+i*h}" width="44" height="${h+.5}" fill="${COL[k]}"/>`)}
+  return `<svg viewBox="0 0 64 100" role="img" aria-label="${LABEL[key]}"><defs><clipPath id="${id}"><path d="${SHAPE[c.b]}"/></clipPath></defs>`+
+   `<line x1="32" y1="42" x2="32" y2="26" stroke="var(--ink)" stroke-width="2"/>`+topmark(c.top,c.tc)+
+   `<g clip-path="url(#${id})">${inner}</g><path d="${SHAPE[c.b]}" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linejoin="round"/>`+
+   `<path d="M0 80q8-5 16 0t16 0t16 0t16 0V100H0z" fill="var(--sea)" opacity=".92"/></svg>`;
+}
+function fillFigs(root){
+  root.querySelectorAll('.figs[data-figs]').forEach(el=>{
+    el.innerHTML=el.dataset.figs.split(',').map(k=>`<figure>${buoy(k)}<figcaption>${LABEL[k]}</figcaption></figure>`).join('');
+  });
+}
+
+/* ---------- pregunta ---------- */
+function qHTML(it,mode){
+  const q=it.q;
+  let h=`<div class="qtext">${q.q}</div>`;
+  if(q.s)h+=`<div class="qfig">${buoy(q.s)}</div>`;
+  h+='<div class="opts">';
+  it.order.forEach((k,pos)=>{
+    let cls='';
+    if(mode==='reveal'){if(k===0)cls='correct';else if(it.pick===pos)cls='wrong'}
+    else if(it.pick===pos)cls='sel';
+    h+=`<button class="opt ${cls}" data-pos="${pos}" ${mode==='reveal'?'disabled':''}><span class="ltr">${'ABCD'[pos]}</span><span class="otx">${q.o[k]}</span></button>`;
+  });
+  h+='</div>';
+  if(mode==='reveal'){
+    if(it.pick===null)h+=`<div class="why bad"><b>Sin contestar.</b> ${q.e}</div>`;
+    else{const ok=isOk(it);h+=`<div class="why ${ok?'ok':'bad'}"><b>${ok?'Correcto.':'No es esa.'}</b> ${q.e}</div>`}
+  }
+  return h;
+}
+
+/* ---------- navegación ---------- */
+const NAV=[['inicio','Inicio'],['temario','Temario'],['test','Test'],['simulacro','Simulacro'],['fallos','Mis fallos'],['examen','El examen']];
+function shell(active,html){
+  app.innerHTML=`<div class="wrap"><header class="top"><div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="var(--accent)" stroke-width="2"/><path d="M16 5l4 11-4 11-4-11z" fill="var(--accent)"/><circle cx="16" cy="16" r="2" fill="var(--surface)"/></svg>Rumbo PER</div>
+  <nav class="nav" aria-label="Secciones">${NAV.map(([h,t])=>`<a href="#${h}" ${h===active?'aria-current="page"':''}>${t}</a>`).join('')}</nav></header><main>${html}</main></div>`;
+  app.querySelectorAll('.nav a').forEach(a=>a.addEventListener('click',()=>{if(location.hash===a.getAttribute('href'))setTimeout(route,0)}));
+  fillFigs(app);
+}
+const top=()=>window.scrollTo(0,0);
+const main=()=>app.querySelector('main');
+
+/* ---------- INICIO ---------- */
+function nextLesson(){
+  for(const u of UNITS)for(let i=0;i<u.lessons.length;i++)if(!S.lessons[u.id+'.'+i])return {u,i};
+  return null;
+}
+function viewHome(){
+  const ans=Object.keys(S.q).length;let n=0,ok=0;Object.values(S.q).forEach(e=>{n+=e.n;ok+=e.ok});
+  const passed=S.sims.filter(s=>s.pass).length;
+  const nx=nextLesson();
+  const cta=nx?`<a class="btn primary" href="#tema-${nx.u.id}">${S.lessons['1.0']||Object.keys(S.lessons).length?'Seguir con':'Empezar con'}: ${nx.u.t}</a>`:`<a class="btn primary" href="#simulacro">Hacer un simulacro</a>`;
+  shell('inicio',`
+  <section class="hero">
+    <span class="eyebrow">Patrón de Embarcaciones de Recreo</span>
+    <h1>Del cero al examen del PER</h1>
+    <p>Teoría explicada en sencillo. Al final de cada lección, una pregunta para comprobar que lo has entendido. Después, tests y simulacros con el formato del examen real.</p>
+    <div class="row">${cta}<a class="btn" href="#examen">Cómo es el examen</a></div>
+  </section>
+  <section class="card"><div class="stats">
+    <div class="stat"><b>${ans}<small class="muted"> / ${BANK.length}</small></b><span>preguntas vistas</span></div>
+    <div class="stat"><b>${n?pct(ok,n)+'%':'-'}</b><span>de aciertos</span></div>
+    <div class="stat"><b>${S.sims.length}</b><span>simulacros hechos (${passed} aprobados)</span></div>
+  </div></section>
+  <section class="card"><h2>Orden recomendado</h2>
+    <ol class="steps" style="margin-top:12px">
+      <li>Temas 1 a 4: vocabulario y reglas básicas. Son pocas preguntas y fáciles.</li>
+      <li>Tema 5 (balizamiento) y tema 6 (RIPA): necesitas mínimos en los dos. Dedícales más tiempo.</li>
+      <li>Temas 7 a 11: maniobra, emergencias, meteorología y cálculos.</li>
+      <li>Test por temas hasta que acertes casi todo. Después, simulacros de 45 preguntas.</li>
+    </ol></section>
+  <section class="card"><h2 style="margin-bottom:6px">Temario</h2><div class="units">${unitsList()}</div></section>`);
+}
+function unitsList(){
+  return UNITS.map(u=>{
+    const st=unitStats(u.id),ld=lessonsDone(u.id),acc=st.n?pct(st.ok,st.n)+'% acierto':'sin test';
+    return `<a class="unit" href="#tema-${u.id}"><span class="no">${u.id}</span><span class="nm">${u.t}</span><span class="meta">${u.n} en el examen</span>
+    <span class="ds">${u.d}<span class="bar"><i style="width:${pct(ld,u.lessons.length)}%"></i></span></span></a>`;
+  }).join('');
+}
+
+/* ---------- TEMARIO / LECCIÓN ---------- */
+function viewTemario(){
+  shell('temario',`<section><h1 style="font-size:30px">Temario oficial</h1><p class="muted" style="margin-top:8px">Las 11 unidades del examen. Junto a cada una, cuántas preguntas caen de ella sobre 45.</p></section>
+  <section class="card"><div class="units">${unitsList()}</div></section>`);
+}
+function viewUnit(uid){
+  const u=UBY[uid];if(!u){location.hash='#temario';return}
+  const st=unitStats(uid);
+  let html=`<section><a href="#temario" class="small">← Temario</a><div class="eyebrow" style="margin-top:10px">Tema ${u.id} · ${u.n} preguntas en el examen</div><h1 style="font-size:32px">${u.t}</h1><p class="muted" style="margin-top:8px">${u.d}</p></section>`;
+  u.lessons.forEach((L,i)=>{
+    html+=`<section class="card lesson" data-l="${i}"><div class="eyebrow">Lección ${i+1} de ${u.lessons.length}${S.lessons[u.id+'.'+i]?' · <span class="done">completada</span>':''}</div><h2>${L.h}</h2><div>${L.b}</div><div class="check" data-check="${i}"></div></section>`;
+  });
+  html+=`<section class="card row"><div class="grow"><h3>¿Listo para el test del tema?</h3><p class="muted small" style="margin:4px 0 0">${st.total} preguntas disponibles.</p></div><button class="btn primary" id="tt">Hacer test de este tema</button></section>`;
+  shell('temario',html);
+  u.lessons.forEach((L,i)=>mountChecks(u,i));
+  document.getElementById('tt').onclick=()=>startPractice(`Tema ${u.id}: ${u.t}`,()=>shuffle(BANK.filter(q=>q.u===uid)).slice(0,10),'#tema-'+uid);
+}
+function mountChecks(u,i){
+  const box=app.querySelector(`[data-check="${i}"]`);
+  const pool=BANK.filter(q=>q.u===u.id&&q.l===i);
+  const qs=shuffle(pool).slice(0,2);
+  if(!qs.length){box.remove();return}
+  box.innerHTML=`<div class="eyebrow">Comprueba que lo has entendido</div>`;
+  qs.forEach(q=>{
+    const it=mkItem(q);const w=document.createElement('div');box.appendChild(w);
+    const draw=()=>{w.innerHTML=qHTML(it,it.pick===null?'open':'reveal');
+      w.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+        it.pick=+b.dataset.pos;record(q.id,isOk(it));
+        if(!S.lessons[u.id+'.'+i]){S.lessons[u.id+'.'+i]=true;save();const e=b.closest('.lesson').querySelector('.eyebrow');if(e)e.innerHTML=`Lección ${i+1} de ${u.lessons.length} · <span class="done">completada</span>`}
+        draw();});};
+    draw();
+  });
+}
+
+/* ---------- PRÁCTICA ---------- */
+function startPractice(title,gen,back){
+  const qs=gen();if(!qs.length)return;
+  top();drawPractice({title,gen,items:qs.map(mkItem),i:0,back:back||'#test'});
+}
+function drawPractice(run){
+  const it=run.items[run.i],ans=it.pick!==null,last=run.i===run.items.length-1;
+  shell('test',`<section class="card"><div class="prog"><span>${run.title}</span><span>${run.i+1} de ${run.items.length}</span></div><div class="bar"><i style="width:${pct(run.i+(ans?1:0),run.items.length)}%"></i></div></section>
+  <section class="card" id="qbox">${qHTML(it,ans?'reveal':'open')}</section>
+  <div class="row"><a class="btn" href="${run.back}">Salir</a>${ans?`<button class="btn primary" id="nx">${last?'Ver resultado':'Siguiente'}</button>`:''}</div>`);
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{it.pick=+b.dataset.pos;record(it.q.id,isOk(it));drawPractice(run)});
+  const nx=document.getElementById('nx');
+  if(nx)nx.onclick=()=>{top();if(last)practiceResult(run);else{run.i++;drawPractice(run)}};
+}
+function reviewHTML(items,onlyWrong){
+  const list=items.filter(it=>!onlyWrong||!isOk(it));
+  if(!list.length)return '';
+  return `<section class="review"><h2>${onlyWrong?'Para repasar':'Revisión'}</h2>${list.map(it=>`<div class="card">${qHTML(it,'reveal')}</div>`).join('')}</section>`;
+}
+function practiceResult(run){
+  const ok=run.items.filter(isOk).length,n=run.items.length;
+  shell('test',`<section class="card"><div class="eyebrow">${run.title}</div><div class="verdict ${pct(ok,n)>=70?'ok':'bad'}">${ok} de ${n} correctas</div>
+  <p class="muted" style="margin:6px 0 14px">${pct(ok,n)>=70?'Buen nivel. Sigue practicando para mantenerlo.':'Repasa la teoría del tema y vuelve a intentarlo.'}</p>
+  <div class="row"><button class="btn primary" id="again">Repetir con otras preguntas</button><a class="btn" href="${run.back}">Volver</a></div></section>${reviewHTML(run.items,true)}`);
+  document.getElementById('again').onclick=()=>startPractice(run.title,run.gen,run.back);
+}
+
+/* ---------- TEST (selector) ---------- */
+let testCount=10;
+function viewTest(){
+  shell('test',`<section><h1 style="font-size:30px">Test por temas</h1><p class="muted" style="margin-top:8px">Cada respuesta se corrige al momento, con una explicación corta.</p></section>
+  <section class="card"><div class="eyebrow" style="margin-bottom:8px">Número de preguntas</div><div class="row" id="cnt">${[10,20,0].map(c=>`<button class="chip" data-c="${c}" aria-pressed="${c===testCount}">${c||'Todas'}</button>`).join('')}</div></section>
+  <section class="picker">
+    <button class="pick" data-u="all"><b>Todos los temas</b><span>Mezcla de todo el temario</span></button>
+    <button class="pick" data-u="blocks"><b>Bloques con mínimo</b><span>Balizamiento, RIPA y carta</span></button>
+    ${UNITS.map(u=>{const st=unitStats(u.id);return `<button class="pick" data-u="${u.id}"><b>${u.id}. ${u.t}</b><span>${st.total} preguntas${st.n?' · '+pct(st.ok,st.n)+'% acierto':''}</span></button>`}).join('')}
+  </section>`);
+  app.querySelectorAll('#cnt .chip').forEach(b=>b.onclick=()=>{testCount=+b.dataset.c;app.querySelectorAll('#cnt .chip').forEach(x=>x.setAttribute('aria-pressed',x===b))});
+  app.querySelectorAll('.pick').forEach(b=>b.onclick=()=>{
+    const v=b.dataset.u;let pool,title;
+    if(v==='all'){pool=BANK;title='Todos los temas'}
+    else if(v==='blocks'){pool=BANK.filter(q=>EXAM_MIN[q.u]);title='Balizamiento, RIPA y carta'}
+    else{pool=BANK.filter(q=>q.u===+v);title=`Tema ${v}: ${UBY[v].t}`}
+    startPractice(title,()=>{const qs=shuffle(pool);return testCount?qs.slice(0,testCount):qs},'#test');
+  });
+}
+
+/* ---------- FALLOS ---------- */
+function viewFails(){
+  const bad=BANK.filter(q=>S.q[q.id]&&S.q[q.id].last===false);
+  shell('fallos',`<section><h1 style="font-size:30px">Mis fallos</h1><p class="muted" style="margin-top:8px">Las preguntas que fallaste la última vez que las contestaste. Cuando aciertas una, sale de esta lista.</p></section>
+  ${bad.length?`<section class="card row"><div class="grow"><h2>${bad.length} pendientes</h2></div><button class="btn primary" id="go">Repasarlas</button></section>`:`<section class="card flat"><p style="margin:0">Todavía no tienes fallos. Haz un test y aquí aparecerán las preguntas que falles.</p></section>`}`);
+  const g=document.getElementById('go');if(g)g.onclick=()=>startPractice('Mis fallos',()=>shuffle(BANK.filter(q=>S.q[q.id]&&S.q[q.id].last===false)),'#fallos');
+}
+
+/* ---------- SIMULACRO ---------- */
+function buildExam(){
+  let qs=[];UNITS.forEach(u=>qs=qs.concat(shuffle(BANK.filter(q=>q.u===u.id)).slice(0,u.n)));
+  return qs;   // en el orden del examen real: tema 1 a 11
+}
+function viewSim(){
+  const hist=S.sims.slice(-5).reverse();
+  shell('simulacro',`<section><h1 style="font-size:30px">Simulacro de examen</h1><p class="muted" style="margin-top:8px">${TOTAL} preguntas, ${MINUTES} minutos y el mismo reparto por temas que el examen real. No se corrige hasta entregar.</p></section>
+  <section class="card"><h3>Para aprobar</h3><ul style="margin:8px 0 16px;padding-left:20px"><li>Al menos <b>${PASS} aciertos</b> de ${TOTAL} (máximo ${TOTAL-PASS} errores).</li><li>Balizamiento: al menos <b>3 de 5</b>.</li><li>RIPA: al menos <b>5 de 10</b>.</li><li>Carta de navegación: al menos <b>2 de 4</b>.</li></ul>
+  <button class="btn primary" id="go">Empezar simulacro</button></section>
+  ${hist.length?`<section class="card"><h3>Últimos intentos</h3><div class="scroll"><table><thead><tr><th>Fecha</th><th>Aciertos</th><th>Resultado</th></tr></thead><tbody>${hist.map(s=>`<tr><td>${s.d}</td><td>${s.ok} / ${s.n}</td><td><span class="pill ${s.pass?'ok':'bad'}">${s.pass?'Aprobado':'Suspenso'}</span></td></tr>`).join('')}</tbody></table></div></section>`:''}`);
+  document.getElementById('go').onclick=()=>startExam();
+}
+function startExam(){
+  const run={items:buildExam().map(mkItem),i:0,end:Date.now()+MINUTES*60000,confirm:false};
+  clearTimer();top();
+  timerId=setInterval(()=>{
+    const left=Math.max(0,Math.round((run.end-Date.now())/1000));
+    const t=document.getElementById('timer');
+    if(t){t.textContent=fmt(left);t.classList.toggle('low',left<300)}
+    if(left<=0){clearTimer();examResult(run,true)}
+  },1000);
+  drawExam(run);
+}
+const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+function drawExam(run){
+  const it=run.items[run.i],n=run.items.length,left=Math.max(0,Math.round((run.end-Date.now())/1000));
+  const unans=run.items.filter(x=>x.pick===null).length;
+  shell('simulacro',`<section class="card"><div class="prog"><span>Pregunta ${run.i+1} de ${n} · ${UBY[it.q.u].t}</span><span class="timer" id="timer">${fmt(left)}</span></div></section>
+  <section class="card" id="qbox">${qHTML(it,'exam')}</section>
+  <div class="row"><button class="btn" id="pv" ${run.i===0?'disabled':''}>Anterior</button><button class="btn" id="nx" ${run.i===n-1?'disabled':''}>Siguiente</button><span class="grow"></span><button class="btn primary" id="fin">Entregar</button></div>
+  ${run.confirm?`<section class="card"><p style="margin:0 0 12px"><b>${unans?`Te quedan ${unans} sin contestar.`:'Has contestado todas.'}</b> Las que dejes en blanco cuentan como error. ¿Entregar el examen?</p><div class="row"><button class="btn primary" id="yes">Sí, entregar</button><button class="btn" id="no">Seguir</button></div></section>`:''}
+  <section class="card"><div class="grid">${run.items.map((x,k)=>`<button data-k="${k}" class="${k===run.i?'cur':x.pick!==null?'ans':''}" aria-label="Pregunta ${k+1}">${k+1}</button>`).join('')}</div></section>`);
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{it.pick=+b.dataset.pos;drawExam(run)});
+  app.querySelectorAll('.grid button').forEach(b=>b.onclick=()=>{run.i=+b.dataset.k;top();drawExam(run)});
+  document.getElementById('pv').onclick=()=>{run.i--;top();drawExam(run)};
+  document.getElementById('nx').onclick=()=>{run.i++;top();drawExam(run)};
+  document.getElementById('fin').onclick=()=>{run.confirm=true;drawExam(run)};
+  const y=document.getElementById('yes');if(y){y.onclick=()=>{clearTimer();examResult(run,false)};document.getElementById('no').onclick=()=>{run.confirm=false;drawExam(run)}}
+}
+function examResult(run,timeUp){
+  clearTimer();top();
+  run.items.forEach(it=>{if(it.pick!==null)record(it.q.id,isOk(it))});
+  const ok=run.items.filter(isOk).length,n=run.items.length;
+  const by={};UNITS.forEach(u=>by[u.id]={ok:0,n:0});
+  run.items.forEach(it=>{by[it.q.u].n++;if(isOk(it))by[it.q.u].ok++});
+  const fails=[];
+  if(ok<PASS)fails.push(`Aciertos totales: ${ok} (mínimo ${PASS}).`);
+  Object.keys(EXAM_MIN).forEach(u=>{if(by[u].ok<EXAM_MIN[u])fails.push(`${UBY[u].t}: ${by[u].ok} aciertos (mínimo ${EXAM_MIN[u]}).`)});
+  const pass=!fails.length;
+  S.sims.push({d:new Date().toLocaleDateString('es-ES',{day:'2-digit',month:'short'}),ok,n,pass});save();
+  shell('simulacro',`<section class="card"><div class="eyebrow">${timeUp?'Se acabó el tiempo':'Simulacro entregado'}</div>
+  <div class="verdict ${pass?'ok':'bad'}">${pass?'Aprobado':'Suspenso'} · ${ok} de ${n}</div>
+  ${pass?'<p class="muted" style="margin:6px 0 0">Cumples el total y los mínimos de cada bloque.</p>':`<ul style="margin:10px 0 0;padding-left:20px">${fails.map(f=>`<li>${f}</li>`).join('')}</ul>`}
+  <div class="row" style="margin-top:16px"><button class="btn primary" id="again">Otro simulacro</button><a class="btn" href="#fallos">Repasar fallos</a></div></section>
+  <section class="card"><h3 style="margin-bottom:8px">Resultado por tema</h3><div class="scroll"><table><thead><tr><th>Tema</th><th>Aciertos</th><th>Mínimo</th><th></th></tr></thead><tbody>${UNITS.map(u=>{const b=by[u.id],m=EXAM_MIN[u.id];const st=m?(b.ok>=m?'<span class="pill ok">Cumple</span>':'<span class="pill bad">No llega</span>'):'';return `<tr><td>${u.id}. ${u.t}</td><td>${b.ok} / ${b.n}</td><td>${m||'-'}</td><td>${st}</td></tr>`}).join('')}</tbody></table></div></section>
+  ${reviewHTML(run.items,true)}`);
+  document.getElementById('again').onclick=()=>startExam();
+}
+
+/* ---------- EL EXAMEN ---------- */
+function viewExam(){
+  shell('examen',`<section><h1 style="font-size:30px">Cómo se saca el PER</h1><p class="muted" style="margin-top:8px">Resumen con datos del Real Decreto 875/2014 y de la web del Gobierno Vasco. Confírmalo siempre en las fuentes oficiales antes de matricularte.</p></section>
+  <section class="card"><h2 style="margin-bottom:12px">Qué te permite el título</h2><dl>
+    <dt>Básico</dt><dd>Gobernar embarcaciones a motor de hasta <b>15 m</b> de eslora, hasta <b>12 millas</b> de la costa. También entre las islas de Baleares y Canarias, y motos náuticas.</dd>
+    <dt>Ampliado</dt><dd>Con prácticas de vela (mínimo 32 h en total con las básicas), puedes llevar también veleros. Hay atribuciones de hasta <b>24 m</b> y travesías entre la Península y Baleares.</dd>
+    <dt>Edad</dt><dd>18 años cumplidos el día de las pruebas.</dd></dl></section>
+  <section class="card"><h2 style="margin-bottom:12px">Qué tienes que superar</h2><dl>
+    <dt>1. Examen teórico</dt><dd>45 preguntas tipo test, 4 opciones, una correcta. 1 hora y 30 minutos. Es lo que entrena esta web.</dd>
+    <dt>2. Prácticas</dt><dd>Prácticas básicas de seguridad y navegación: mínimo <b>16 horas</b> con un instructor, en escuela náutica.</dd>
+    <dt>3. Radio</dt><dd>Curso de radiooperador de corto alcance (ROCA), obligatorio para el PER.</dd>
+    <dt>4. Reconocimiento médico</dt><dd>Reconocimiento psicofísico en un centro autorizado.</dd></dl></section>
+  <section class="card"><h2 style="margin-bottom:12px">Cómo se aprueba la teoría</h2>
+    <p>Hay que sacar <b>32 aciertos o más</b> (máximo 13 errores) y además cumplir mínimos en tres bloques:</p>
+    <div class="scroll"><table><thead><tr><th>Bloque</th><th>Preguntas</th><th>Mínimo de aciertos</th></tr></thead><tbody><tr><td>Balizamiento</td><td>5</td><td>3</td></tr><tr><td>Reglamento (RIPA)</td><td>10</td><td>5</td></tr><tr><td>Carta de navegación</td><td>4</td><td>2</td></tr></tbody></table></div>
+    <p class="small muted" style="margin-top:12px">En el examen de Euskadi de noviembre de 2025 los errores no restaban. Si ya tienes el título de PNB, haces una prueba más corta con solo los temas 7 a 11.</p></section>
+  <section class="card"><h2 style="margin-bottom:12px">Convocatorias en Euskadi 2026</h2><dl>
+    <dt>1ª convocatoria</dt><dd>10 de marzo, FICOBA (Irun)</dd>
+    <dt>2ª convocatoria</dt><dd>9 de junio, BEC (Barakaldo)</dd>
+    <dt>3ª convocatoria</dt><dd>5 de noviembre, FICOBA (Irun). Ya ha pasado.</dd>
+    <dt>Tasa del PER</dt><dd>44,10 € en 2026</dd></dl>
+    <p class="small muted" style="margin-top:12px">No he visto publicadas las fechas de 2027. Miralas en la web del Gobierno Vasco. La matrícula es por convocatoria y hay que pagar la tasa antes de que cierre el plazo.</p></section>
+  <section class="card"><h2 style="margin-bottom:8px">Antes del examen real</h2>
+    <p>Las preguntas de esta web son originales y sirven para aprender. No son las del examen. Cuando las domines, practica con exámenes oficiales de convocatorias anteriores y con una carta náutica real, regla y compás.</p>
+    <ul style="margin:0;padding-left:20px"><li><a href="https://www.euskadi.eus/contenidos/noticia/titulaciones_nauticas/es_def/adjuntos/PER-11_2025_B_neg.pdf" target="_blank" rel="noopener">Examen PER de Euskadi, 6 de noviembre de 2025</a></li><li><a href="https://www.juntadeandalucia.es/export/drupaljda/2022_2C_PER_modelo_A.pdf" target="_blank" rel="noopener">Examen PER de Andalucía, junio de 2022</a></li></ul></section>
+  <section class="card flat"><div class="eyebrow" style="margin-bottom:8px">Fuentes</div><ul class="small" style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px">
+    <li><a href="https://www.boe.es/eli/es/rd/2014/10/10/875/con/20141011" target="_blank" rel="noopener">Real Decreto 875/2014, titulaciones náuticas de recreo (BOE)</a></li>
+    <li><a href="https://www.euskadi.eus/web01-tramite/es/contenidos/informacion/clases_titulos_embarcaciones/es_def/index.shtml" target="_blank" rel="noopener">Clases de títulos, Gobierno Vasco</a></li>
+    <li><a href="https://www.euskadi.eus/examenes-titulaciones-embarcaciones-recreo-2026/web01-tramite/es/" target="_blank" rel="noopener">Convocatorias 2026, Gobierno Vasco</a></li>
+    <li><a href="https://www.sailwiz.com/blog/es/sacarse-el-per-consejos" target="_blank" rel="noopener">Consejos para sacarse el PER, Sailwiz</a></li></ul></section>`);
+}
+
+/* ---------- rutas ---------- */
+function route(){
+  clearTimer();top();
+  const h=(location.hash||'#inicio').slice(1);
+  if(h.startsWith('tema-'))return viewUnit(+h.slice(5));
+  ({inicio:viewHome,temario:viewTemario,test:viewTest,simulacro:viewSim,fallos:viewFails,examen:viewExam}[h]||viewHome)();
+}
+window.addEventListener('hashchange',route);
+route();
+})();
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+</script>
+</body>
+</html>
