@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proyectos · Asier Caso Erice</title>
+<meta name="description" content="Proyectos de Asier Caso Erice: mapa de autobuses de Donostia en tiempo real, separador de pistas de audio, web para preparar el PER y este CV web.">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap tabs">
+    <a href="index.html">CV</a>
+    <a href="proyectos.html" aria-current="page">Proyectos</a>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="page-intro">
+    <h1>Proyectos</h1>
+    <p>Cosas que he construido por gusto y para aprender. Algunas siguen en marcha.</p>
+  </div>
+
+  <div class="proj-list">
+
+    <article class="proj">
+      <div class="proj-head">
+        <h3>Mapa de autobuses de Donostia en tiempo real</h3>
+        <span class="estado">Funcionando</span>
+      </div>
+      <p class="lead">Mapa web con los recorridos y las paradas de Dbus y la posición de cada autobús en directo. Se actualiza cada 10 segundos y tiene un botón para refrescar a mano.</p>
+      <ul>
+        <li>Recorridos y paradas a partir del GTFS oficial de Dbus.</li>
+        <li>Las posiciones llegan por una función intermedia en Netlify, porque el servicio de Dbus no se puede consultar directamente desde el navegador.</li>
+        <li>Más de 60 autobuses visibles a la vez.</li>
+      </ul>
+      <div class="tags"><span class="tag">JavaScript</span><span class="tag">HTML</span><span class="tag">GTFS</span><span class="tag">Netlify</span><span class="tag">GitHub</span></div>
+    </article>
+
+    <article class="proj">
+      <div class="proj-head">
+        <h3>Rumbo PER</h3>
+        <span class="estado">En desarrollo</span>
+      </div>
+      <p class="lead">Web para preparar el examen teórico del PER (Patrón de Embarcaciones de Recreo) partiendo de cero: teoría sencilla por temas, tests con explicación, simulacros de 45 preguntas y repaso de fallos.</p>
+      <ul>
+        <li>Las 11 unidades del temario oficial, con una pregunta de comprobación al final de cada lección.</li>
+        <li>Simulacro con el reparto, el tiempo y los mínimos por bloque del examen real.</li>
+        <li>Dibujos de las boyas del balizamiento hechos en SVG.</li>
+        <li>Siguiente paso: poder instalarla como app desde el navegador.</li>
+      </ul>
+      <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">SVG</span></div>
+    </article>
+
+    <article class="proj">
+      <div class="proj-head">
+        <h3>Separador de pistas</h3>
+        <span class="estado">Funcionando</span>
+      </div>
+      <p class="lead">Programa para Windows que quita la voz o separa los instrumentos de una canción con inteligencia artificial, para poder tocar el saxofón encima.</p>
+      <ul>
+        <li>Usa Demucs, un modelo de separación de audio.</li>
+        <li>Interfaz gráfica con casillas para elegir qué instrumentos separar y ajuste de tono en semitonos.</li>
+        <li>Barra de progreso con tiempo restante, botón de cancelar y aviso sonoro al terminar.</li>
+      </ul>
+      <div class="tags"><span class="tag">Python</span><span class="tag">Demucs</span><span class="tag">Windows</span></div>
+    </article>
+
+    <article class="proj">
+      <div class="proj-head">
+        <h3>CV web</h3>
+        <span class="estado">Publicado</span>
+      </div>
+      <p class="lead">Esta misma web: mi currículum en formato web, gratuito y sin dominio propio. Se actualiza solo cada vez que subo cambios a GitHub.</p>
+      <ul>
+        <li>Menú que marca la sección que se está viendo.</li>
+        <li>Modo oscuro automático y descarga del CV en PDF.</li>
+      </ul>
+      <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">GitHub</span><span class="tag">Netlify</span></div>
+    </article>
+
+  </div>
+
+  <footer>© <span id="year"></span> Asier Caso Erice</footer>
+
+</div>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
