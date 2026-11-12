@@ -1,6 +1,6 @@
 // Guarda la app en el dispositivo para que funcione sin conexión.
 // Al cambiar archivos, sube el número de versión.
-var CACHE = 'rumbo-per-v1';
+var CACHE = 'rumbo-per-v2';
 var FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-180.png'];
 
 self.addEventListener('install', function (e) {

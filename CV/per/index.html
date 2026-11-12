@@ -57,6 +57,8 @@ code{font-family:var(--f-mono);background:var(--soft);padding:1px 6px;border-rad
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;padding-block:16px 12px}
 .brand{font-family:var(--f-head);font-weight:700;font-size:20px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
 .brand svg{width:26px;height:26px}
+.volver{display:inline-block;margin-top:14px;font-family:var(--f-head);font-weight:600;font-size:14px;color:var(--muted);text-decoration:none;padding:6px 12px;border:1px solid var(--line);border-radius:8px}
+.volver:hover{color:var(--accent);border-color:var(--accent)}
 .nav{display:flex;gap:4px;flex-wrap:wrap}
 .nav a{font-family:var(--f-head);font-weight:500;font-size:15px;color:var(--muted);text-decoration:none;padding:7px 12px;border-radius:8px}
 .nav a:hover{background:var(--soft);color:var(--ink)}
@@ -673,7 +675,7 @@ function qHTML(it,mode){
 /* ---------- navegación ---------- */
 const NAV=[['inicio','Inicio'],['temario','Temario'],['test','Test'],['simulacro','Simulacro'],['fallos','Mis fallos'],['examen','El examen']];
 function shell(active,html){
-  app.innerHTML=`<div class="wrap"><header class="top"><div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="var(--accent)" stroke-width="2"/><path d="M16 5l4 11-4 11-4-11z" fill="var(--accent)"/><circle cx="16" cy="16" r="2" fill="var(--surface)"/></svg>Rumbo PER</div>
+  app.innerHTML=`<div class="wrap"><a class="volver" href="../proyectos.html">← Proyectos</a><header class="top"><div class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="var(--accent)" stroke-width="2"/><path d="M16 5l4 11-4 11-4-11z" fill="var(--accent)"/><circle cx="16" cy="16" r="2" fill="var(--surface)"/></svg>Rumbo PER</div>
   <nav class="nav" aria-label="Secciones">${NAV.map(([h,t])=>`<a href="#${h}" ${h===active?'aria-current="page"':''}>${t}</a>`).join('')}</nav></header><main>${html}</main></div>`;
   app.querySelectorAll('.nav a').forEach(a=>a.addEventListener('click',()=>{if(location.hash===a.getAttribute('href'))setTimeout(route,0)}));
   fillFigs(app);
